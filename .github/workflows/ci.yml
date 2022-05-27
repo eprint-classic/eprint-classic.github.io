@@ -12,6 +12,8 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Create Build Environment
+      run: python3 -m pip install bs4
+    - name: Get papers
       run: python3 code/parse.py 2022 > 2022.html
     - name: Push
       run: git commit -am"daily update" && git push

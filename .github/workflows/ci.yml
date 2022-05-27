@@ -16,4 +16,4 @@ jobs:
     - name: Get papers
       run: python3 code/parse.py 2022 > 2022.html
     - name: Push
-      run: git -c user.name='Xiao Wang' -c user.email='no@email.com' commit -am"daily update" && git push
+      run: (git -c user.name='Xiao Wang' -c user.email='no@email.com' commit -am"daily update" || true )&& git push

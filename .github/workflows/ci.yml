@@ -1,0 +1,21 @@
+name: ci
+on:
+  schedule:
+    - cron: "0 8 * * *"
+
+jobs:
+  build_x86:
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    env:
+      BUILD_TYPE: ${{matrix.build_type}}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Create Build Environment
+      run: python3 -m pip install bs4
+    - name: Get papers
+      run: python3 code/parse.py 2022 > 2022.html
+    - name: Push
+      run: (git -c user.name='Xiao Wang' -c user.email='no@email.com' commit -am"daily update" || true )&& git push

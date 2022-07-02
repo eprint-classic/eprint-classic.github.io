@@ -36,9 +36,9 @@ if papers == 0:
 	exit()
 print_header(year)
 # get number of pages
-pages = int((papers+19)/20)
+pages = int((papers+99)/100)
 for i in range(0, pages):
-	r = requests.get("https://eprint.iacr.org/"+str(year)+"/?offset="+str(20*i))
+	r = requests.get("https://eprint.iacr.org/"+str(year)+"/?offset="+str(100*i))
 	bs = bs4.BeautifulSoup(r.text, 'html.parser')
 	titles = bs.find_all("div",class_="papertitle")
 	urls = bs.find_all("div",class_="flex-grow-1")

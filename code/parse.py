@@ -41,12 +41,14 @@ for i in range(0, pages):
 	r = requests.get("https://eprint.iacr.org/"+str(year)+"/?offset="+str(20*i))
 	bs = bs4.BeautifulSoup(r.text, 'html.parser')
 	titles = bs.find_all("div",class_="papertitle")
-	authors = bs.find_all("div",class_="paperauthors ms-0")
-	for i,j in zip(titles, authors):
+	urls = bs.find_all("div",class_="flex-grow-1")
+	authors = bs.find_all("div",class_="summaryauthors")
+
+	for i,j,k in zip(titles, authors, urls):
 		print("\
 	<dt>\
-		<a href=\""+"http://eprint.iacr.org/"+i.a['href']+"\">"+i.a['href'][1:]+"</a>\
-		(<a href=\""+"http://eprint.iacr.org/"+i.a['href']+".pdf\">PDF</a>)\
-	<dd><b>", i.a.text,"</b><dd><em>", j.text,"</em>")
+		<a href=\""+"http://eprint.iacr.org/"+k.a['href']+"\">"+k.a['href'][1:]+"</a>\
+		(<a href=\""+"http://eprint.iacr.org/"+k.a['href']+".pdf\">PDF</a>)\
+	<dd><b>", i.text,"</b><dd><em>", j.text,"</em>")
 
 print_footer()

@@ -17,4 +17,4 @@ jobs:
     - name: Get papers
       run: bash code/run.sh
     - name: Push
-      run: (git -c user.name='Xiao Wang' -c user.email='no@email.com' commit -am"daily update" || true )&& git push
+      run: (git -c user.name='Xiao Wang' -c user.email='no@email.com' commit -am"weekly update" || true )&& git push

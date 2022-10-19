@@ -13,7 +13,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Create Build Environment
-      run: python3 -m pip install bs4
+      run: python3 -m pip install pyoai
     - name: Get papers
       run: bash code/run.sh
     - name: Push

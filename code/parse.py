@@ -1,4 +1,6 @@
-import sys, bs4, requests
+import sys
+from oaipmh.client import Client
+from oaipmh.metadata import MetadataRegistry, oai_dc_reader
 
 def print_header(year):
 	print("\
@@ -21,34 +23,36 @@ def print_footer():
 </html>\
 ")
 
+URL = 'https://eprint.iacr.org/oai'
+registry = MetadataRegistry()
+registry.registerReader('oai_dc', oai_dc_reader)
+client = Client(URL, registry)
 year = int(sys.argv[1])
-r = requests.get("https://eprint.iacr.org/byyear")
-bs = bs4.BeautifulSoup(r.text, 'html.parser')
-years = bs.find_all("li")
-papers = 0
-for i in years:
-	if "papers" in i.text:
-		if str(year)+" (" in i.text:
-			papers = int(i.text.split("(")[1].split("papers")[0])
-			break
-if papers == 0:
-	print("ERROR!")
-	exit()
+papers = []
+
+for record in client.listRecords(metadataPrefix='oai_dc'):
+    if record[1] is not None:
+        data = record[1].getMap()
+
+        p_year = data["identifier"][0][len("https://eprint.iacr.org/"):].split("/")[0]
+        id = data["identifier"][0][len("https://eprint.iacr.org/"):].split("/")[1]
+        title = data["title"][0]
+        authors = data["creator"]
+        for i in range(len(authors)):
+            if authors[i].startswith("and "):
+                authors[i] = authors[i][3:]
+
+        papers.append((p_year, id, title, ", ".join(authors)))
+        if int(p_year) < year:
+            break
+
+papers.sort(key=lambda x: int(x[1]), reverse=True)
+
 print_header(year)
-# get number of pages
-pages = int((papers+99)/100)
-for i in range(0, pages):
-	r = requests.get("https://eprint.iacr.org/"+str(year)+"/?offset="+str(100*i))
-	bs = bs4.BeautifulSoup(r.text, 'html.parser')
-	titles = bs.find_all("div",class_="papertitle")
-	urls = bs.find_all("div",class_="flex-grow-1")
-	authors = bs.find_all("div",class_="summaryauthors")
-
-	for i,j,k in zip(titles, authors, urls):
-		print("\
+for paper in papers:
+    print("\
 	<dt>\
-		<a href=\""+"http://eprint.iacr.org/"+k.a['href']+"\">"+k.a['href'][1:]+"</a>\
-		(<a href=\""+"http://eprint.iacr.org/"+k.a['href']+".pdf\">PDF</a>)\
-	<dd><b>", i.text,"</b><dd><em>", j.text,"</em>")
-
+		<a href=\""+"http://eprint.iacr.org/"+paper[0] + "/" + paper[1]+"\">"+paper[0] + "/" + paper[1]+"</a>\
+		(<a href=\""+"http://eprint.iacr.org/"+paper[0] + "/" + paper[1]+".pdf\">PDF</a>)\
+	<dd><b>", paper[2],"</b><dd><em>", paper[3],"</em>")
 print_footer()

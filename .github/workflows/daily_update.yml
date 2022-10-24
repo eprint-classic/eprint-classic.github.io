@@ -2,7 +2,7 @@ name: ci
 on:
   push:
   schedule:
-    - cron: "0 8 * * *"
+    - cron: "0 */6 * * *"
 jobs:
   build_x86:
     strategy:

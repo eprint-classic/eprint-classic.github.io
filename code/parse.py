@@ -76,6 +76,7 @@ for line in sys.stdin:
             papers.append(line)
     elif year == -1:
         papers.append(line)
+sys.stdin.close()
 
 print_header(year)
 for paper in papers:

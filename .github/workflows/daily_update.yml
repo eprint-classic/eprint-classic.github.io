@@ -16,6 +16,6 @@ jobs:
     - name: Create Build Environment
       run: python3 -m pip install pyoai
     - name: Get papers
-      run: python3 code/get.py > data.txt && cat data.txt | python3 code/parse.py 2022 > 2022.html
+      run: python3 code/get.py > data.txt && bash code/run.sh
     - name: Push
       run: (git -c user.name='Xiao Wang' -c user.email='no@email.com' commit -am"daily update" || true )&& git push

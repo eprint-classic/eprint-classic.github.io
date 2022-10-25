@@ -1,3 +1,4 @@
+rm *.html
 curyear=`date +'%Y'`
 for i in `seq 1996 "$curyear"`
 do

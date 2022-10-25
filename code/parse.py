@@ -62,7 +62,9 @@ def print_footer():
 year = int(sys.argv[1])
 papers = []
 
-for line in sys.stdin:
+f = open(sys.argv[2], 'r')
+
+for line in f.readlines():
     i_year = int(line.split("/")[3])
     if year > 1000:
         if i_year < year:
@@ -76,7 +78,7 @@ for line in sys.stdin:
             papers.append(line)
     elif year == -1:
         papers.append(line)
-sys.stdin.close()
+f.close()
 
 print_header(year)
 for paper in papers:

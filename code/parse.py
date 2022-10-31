@@ -45,6 +45,43 @@ function myFunction() {
   }
 }
 </script>
+<ul id="headerul">
+
+	<li>		<a href="https://eprint-classic.github.io/all.html">[IACR ePrint 1996 - now ]</a> (~5MB!)	</li>
+	<li><a href="https://eprint-classic.github.io/2020s.html">[IACR ePrint 2020 - now ]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2022.html">[IACR ePrint 2022]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2021.html">[IACR ePrint 2021]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2020.html">[IACR ePrint 2020]</a>
+	<li>		<a href="https://eprint-classic.github.io/2010s.html">[IACR ePrint 2010 - 2019]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2019.html">[IACR ePrint 2019]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2018.html">[IACR ePrint 2018]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2017.html">[IACR ePrint 2017]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2016.html">[IACR ePrint 2016]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2015.html">[IACR ePrint 2015]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2014.html">[IACR ePrint 2014]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2013.html">[IACR ePrint 2013]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2012.html">[IACR ePrint 2012]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2011.html">[IACR ePrint 2011]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2010.html">[IACR ePrint 2010]</a>	</li>
+	<li>		<a href="https://eprint-classic.github.io/2000s.html">[IACR ePrint 2000 - 2009]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2009.html">[IACR ePrint 2009]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2008.html">[IACR ePrint 2008]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2007.html">[IACR ePrint 2007]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2006.html">[IACR ePrint 2006]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2005.html">[IACR ePrint 2005]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2004.html">[IACR ePrint 2004]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2003.html">[IACR ePrint 2003]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2002.html">[IACR ePrint 2002]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2001.html">[IACR ePrint 2001]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2000.html">[IACR ePrint 2000]</a>	</li>
+	<li>		<a href="https://eprint-classic.github.io/1990s.html">[IACR ePrint 1996 - 1999]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/1999.html">[IACR ePrint 1999]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/1998.html">[IACR ePrint 1998]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/1997.html">[IACR ePrint 1997]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/1996.html">[IACR ePrint 1996]</a>	</li>
+
+
+    </ul>
 <input type="text" style="width: 450px;" id="myInput" onkeyup="myFunction()" placeholder="Search for title or author...">
 <ul id="myul" style="list-style: none;padding-left: 0;"> 
 """)

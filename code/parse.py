@@ -49,6 +49,7 @@ function myFunction() {
 
 	<li>		<a href="https://eprint-classic.github.io/all.html">[ePrint 1996 - now ]</a> (~5MB!)	</li>
 	<li><a href="https://eprint-classic.github.io/2020s.html">[ePrint 2020 - now ]</a>
+			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2023.html">[ePrint 2023]</a>
 			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2022.html">[ePrint 2022]</a>
 			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2021.html">[ePrint 2021]</a>
 			&nbsp;&nbsp;&nbsp;<a href="https://eprint-classic.github.io/2020.html">[ePrint 2020]</a>

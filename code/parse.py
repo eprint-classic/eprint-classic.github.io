@@ -17,12 +17,11 @@ def yeartostr(year):
 		return "2020s"	
 def print_header(year):
 	print("""
+ <!DOCTYPE html>
 <html><head><meta charset=\"utf-8\"></head> 
 <body> 
     <h1>Cryptology ePrint Archive: Listing for  """+yeartostr(year)+""" </h1> 
-    <p/> 
     <hr/> 
-    <p/> 
 <script> 
 function myFunction() {
   // Declare variables
@@ -91,7 +90,6 @@ function myFunction() {
 def print_footer():
 	print("\
     </ul>\
-    <p/>\
     <hr/>\
     [ <a href=\"http://ia.cr/\">Cryptology ePrint archive</a>]\
 </body>\

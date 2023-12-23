@@ -1,4 +1,7 @@
 curyear=`date +'%Y'`
+
+python3 code/index.py $curyear > index.html
+
 for i in `seq 1996 "$curyear"`
 do
 	echo $i

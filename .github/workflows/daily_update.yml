@@ -18,4 +18,4 @@ jobs:
     - name: Get papers
       run: pip3 install sickle && python3 code/get.py > data.txt && bash code/run.sh
     - name: Push
-      run: (git -c user.name='Xiao Wang' -c user.email='no@email.com' commit -am"daily update" || true )&& git push
+      run: (git -c user.name='Xiao Wang' -c user.email='no@email.com' add *.html || true) && (git -c user.name='Xiao Wang' -c user.email='no@email.com' commit -am"daily update" || true) && git push

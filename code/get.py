@@ -18,7 +18,7 @@ with Scythe(BASE_URL) as scythe:
         if record.deleted:
             continue
 
-        title = record.xml.find(".//dc:title", namespaces=NS)
+        title = record.xml.find(".//dc:title", namespaces=NS).text
         iden = record.xml.find(".//dc:identifier", namespaces=NS).text
         id = iden[len("https://eprint.iacr.org/"):].split("/")[1]
         p_year = iden[len("https://eprint.iacr.org/"):].split("/")[0]

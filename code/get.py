@@ -1,32 +1,89 @@
-from oaipmh_scythe import Scythe
+from urllib.parse import urlencode
+from urllib.request import Request, urlopen
+import xml.etree.ElementTree as ET
+import time
 
 BASE_URL = "https://eprint.iacr.org/oai"
 
 NS = {
+    "oai": "http://www.openarchives.org/OAI/2.0/",
     "oai_dc": "http://www.openarchives.org/OAI/2.0/oai_dc/",
-    "dc": "http://purl.org/dc/elements/1.1/"
+    "dc": "http://purl.org/dc/elements/1.1/",
 }
 
+PREFIX = "https://eprint.iacr.org/"
+
+
+def fetch_xml(params, retries=4, sleep_seconds=2):
+    query = urlencode(params)
+    url = f"{BASE_URL}?{query}"
+
+    last_err = None
+    for attempt in range(retries):
+        try:
+            req = Request(
+                url,
+                headers={
+                    "Accept": "text/xml, application/xml;q=0.9, */*;q=0.1",
+                    "Content-Length": "0",
+                    "User-Agent": "eprint-classic/1.0 (+https://github.com/eprint-classic/eprint-classic.github.io)",
+                    "Connection": "close",
+                },
+                method="GET",
+            )
+            with urlopen(req, timeout=60) as resp:
+                return ET.fromstring(resp.read())
+        except Exception as err:
+            last_err = err
+            if attempt + 1 < retries:
+                time.sleep(sleep_seconds * (attempt + 1))
+            else:
+                raise last_err
+
+
 papers = []
+params = {"verb": "ListRecords", "metadataPrefix": "oai_dc"}
 
+while True:
+    root = fetch_xml(params)
 
-with Scythe(BASE_URL) as scythe:
-    records = scythe.list_records(
-    )
-
-    for record in records:
-        if record.deleted:
+    for record in root.findall(".//oai:record", NS):
+        header = record.find("./oai:header", NS)
+        if header is not None and header.get("status") == "deleted":
             continue
 
-        title = record.xml.find(".//dc:title", namespaces=NS).text
-        iden = record.xml.find(".//dc:identifier", namespaces=NS).text
-        id = iden[len("https://eprint.iacr.org/"):].split("/")[1]
-        p_year = iden[len("https://eprint.iacr.org/"):].split("/")[0]
-        authors = record.xml.findall(".//dc:creator", namespaces=NS)
-        authors2 = [i.text for i in authors]
-        papers.append((p_year, id, title, ", ".join(authors2)))
+        title_el = record.find(".//dc:title", NS)
+        id_el = record.find(".//dc:identifier", NS)
+        author_els = record.findall(".//dc:creator", NS)
 
-papers.sort(key=lambda x: 10000*int(x[0])+int(x[1]), reverse=True)
+        if title_el is None or id_el is None or not id_el.text:
+            continue
+
+        ident = id_el.text.strip()
+        if not ident.startswith(PREFIX):
+            continue
+
+        tail = ident[len(PREFIX):]
+        parts = tail.split("/", 1)
+        if len(parts) != 2:
+            continue
+
+        p_year, paper_id = parts
+        title = (title_el.text or "").strip()
+        authors = ", ".join(
+            a.text.strip() for a in author_els if a is not None and a.text
+        )
+
+        papers.append((p_year, paper_id, title, authors))
+
+    token_el = root.find(".//oai:resumptionToken", NS)
+    token = token_el.text.strip() if token_el is not None and token_el.text else ""
+    if not token:
+        break
+
+    params = {"verb": "ListRecords", "resumptionToken": token}
+
+papers.sort(key=lambda x: 10000 * int(x[0]) + int(x[1]), reverse=True)
 
 for paper in papers:
     print("\

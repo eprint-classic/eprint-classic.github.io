@@ -1,6 +1,4 @@
 import sys
-from oaipmh.client import Client
-from oaipmh.metadata import MetadataRegistry, oai_dc_reader
 
 def yeartostr(year):
 	if year > 1000:

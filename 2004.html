@@ -4,21 +4,46 @@
 <body> 
     <h1>Cryptology ePrint Archive: Listing for  2004 </h1> 
     <hr/> 
-<script> 
+<script>
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\]/g, '\$&');
+}
 function myFunction() {
-  // Declare variables
-  var input, filter, ul, li, a, i, txtValue;
+  var input, pattern, ul, li, i, txtValue, title, author, regex, useRegex;
+
   input = document.getElementById('myInput');
-  filter = input.value.toUpperCase();
+  useRegex = document.getElementById('regexMode').checked;
+  pattern = input.value;
   ul = document.getElementById("myul");
   li = ul.getElementsByTagName('li');
 
-  // Loop through all list items, and hide those who don't match the search query
+  if (pattern === "") {
+    for (i = 0; i < li.length; i++) {
+      li[i].style.display = "";
+    }
+    input.setCustomValidity("");
+    return;
+  }
+
+  if (!useRegex) {
+    pattern = escapeRegExp(pattern);
+  }
+
+  try {
+    regex = new RegExp(pattern, "i");
+    input.setCustomValidity("");
+  } catch (err) {
+    input.setCustomValidity("Invalid regular expression");
+    input.reportValidity();
+    return;
+  }
+
   for (i = 0; i < li.length; i++) {
     title = li[i].getElementsByTagName("b")[0];
     author = li[i].getElementsByTagName("em")[0];
-    txtValue = title.textContent + author.textContent;
-    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+    txtValue = title.textContent + " " + author.textContent;
+
+    if (regex.test(txtValue)) {
       li[i].style.display = "";
     } else {
       li[i].style.display = "none";
@@ -68,6 +93,11 @@ function myFunction() {
 
     </ul>
 <input type="text" style="width: 450px;" id="myInput" onkeyup="myFunction()" placeholder="Search for title or author...">
+<label style="margin-left: 10px;">
+  <input type="checkbox" id="regexMode" onchange="myFunction()" checked>
+  Regex
+</label>
+
 <ul id="myul" style="list-style: none;padding-left: 0;"> 
 
 	<li>		<a href="http://eprint.iacr.org/2004/377">2004/377</a>		(<a href="http://eprint.iacr.org/2004/377.pdf">PDF</a>)	<dd><b> New Distributed Ring Signatures for General Families of Signing Subsets </b><dd><em> Javier Herranz, Germán Sáez </em></li>

@@ -22,7 +22,7 @@ def print_header(year):
     <hr/> 
 <script>
 function escapeRegExp(string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return string.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');
 }
 function myFunction() {
   var input, pattern, ul, li, i, txtValue, title, author, regex, useRegex;

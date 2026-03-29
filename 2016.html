@@ -5,27 +5,67 @@
     <h1>Cryptology ePrint Archive: Listing for  2016 </h1> 
     <hr/> 
 <script>
-function escapeRegExp(string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-function myFunction() {
-  var input, pattern, ul, li, i, txtValue, title, author, regex, useRegex;
+var paperIndex = [];
+var searchTimer = null;
 
-  input = document.getElementById('myInput');
-  useRegex = document.getElementById('regexMode').checked;
+function escapeRegExp(string) {
+return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function initSearchIndex() {
+  var ul = document.getElementById("myul");
+  var li, i, title, author, links, paperId, txtValue;
+
+  if (!ul) return;
+
+  li = ul.getElementsByTagName("li");
+  paperIndex = [];
+
+  for (i = 0; i < li.length; i++) {
+    title = li[i].getElementsByTagName("b")[0];
+    author = li[i].getElementsByTagName("em")[0];
+    links = li[i].getElementsByTagName("a");
+    paperId = links.length > 0 ? links[0].textContent : "";
+
+    txtValue =
+      paperId + " " +
+      (title ? title.textContent : "") + " " +
+      (author ? author.textContent : "");
+
+    paperIndex.push({
+      node: li[i],
+      text: txtValue
+    });
+  }
+}
+
+function scheduleSearch() {
+  if (searchTimer !== null) {
+    clearTimeout(searchTimer);
+  }
+  searchTimer = setTimeout(myFunction, 120);
+}
+
+function myFunction() {
+  var input = document.getElementById('myInput');
+  var regexBox = document.getElementById('regexMode');
+  var pattern, regex, i, matched, newDisplay;
+
+  if (!input || !regexBox) return;
+
   pattern = input.value;
-  ul = document.getElementById("myul");
-  li = ul.getElementsByTagName('li');
 
   if (pattern === "") {
-    for (i = 0; i < li.length; i++) {
-      li[i].style.display = "";
+    for (i = 0; i < paperIndex.length; i++) {
+      if (paperIndex[i].node.style.display !== "") {
+        paperIndex[i].node.style.display = "";
+      }
     }
     input.setCustomValidity("");
     return;
   }
 
-  if (!useRegex) {
+  if (!regexBox.checked) {
     pattern = escapeRegExp(pattern);
   }
 
@@ -38,18 +78,17 @@ function myFunction() {
     return;
   }
 
-  for (i = 0; i < li.length; i++) {
-    title = li[i].getElementsByTagName("b")[0];
-    author = li[i].getElementsByTagName("em")[0];
-    txtValue = title.textContent + " " + author.textContent;
+  for (i = 0; i < paperIndex.length; i++) {
+    matched = regex.test(paperIndex[i].text);
+    newDisplay = matched ? "" : "none";
 
-    if (regex.test(txtValue)) {
-      li[i].style.display = "";
-    } else {
-      li[i].style.display = "none";
+    if (paperIndex[i].node.style.display !== newDisplay) {
+      paperIndex[i].node.style.display = newDisplay;
     }
   }
 }
+
+window.addEventListener("load", initSearchIndex);
 </script>
 <ul id="headerul">
 
@@ -92,7 +131,13 @@ function myFunction() {
 
 
     </ul>
-<input type="text" style="width: 450px;" id="myInput" onkeyup="myFunction()" placeholder="Search for title or author...">
+<input
+  type="text"
+  style="width: 450px;"
+  id="myInput"
+  oninput="scheduleSearch()"
+  placeholder="Search for title, author, or paper number..."
+>
 <label style="margin-left: 10px;">
   <input type="checkbox" id="regexMode" onchange="myFunction()" checked>
   Regex

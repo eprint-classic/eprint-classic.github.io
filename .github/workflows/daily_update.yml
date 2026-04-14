@@ -12,10 +12,19 @@ jobs:
     env:
       BUILD_TYPE: ${{matrix.build_type}}
     steps:
-    - uses: actions/checkout@v2
-    - name: Create Build Environment
-      run: python3 -m pip install pyoai
+    - uses: actions/checkout@v4
+    - name: Install dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        pip3 install pyoai oaipmh-scythe
+
     - name: Get papers
-      run: pip3 install oaipmh-scythe && python3 code/get.py > data.txt && bash code/run.sh
+      run: |
+        python3 code/get.py > data.txt
+
+    - name: Generate pages
+      run: |
+        bash code/run.sh
+
     - name: Push
       run: (git -c user.name='Xiao Wang' -c user.email='no@email.com' add *.html || true) && (git -c user.name='Xiao Wang' -c user.email='no@email.com' commit -am"daily update" || true) && git push

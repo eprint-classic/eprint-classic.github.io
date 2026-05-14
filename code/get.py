@@ -1,5 +1,5 @@
 from oaipmh_scythe import Scythe
-import time
+import sys, time
 
 BASE_URL = "https://eprint.iacr.org/oai"
 
@@ -8,13 +8,13 @@ NS = {
     "dc": "http://purl.org/dc/elements/1.1/",
 }
 
-papers = []
+UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:128.0) Gecko/20100101 Firefox/128.0"
 
-# If oaipmh-scythe supports custom headers/session args in your installed version,
-# set a real User-Agent there. Otherwise wrap this in retry logic.
 for attempt in range(3):
+    papers = []
     try:
-        with Scythe(BASE_URL) as scythe:
+        with Scythe(BASE_URL, max_retries=3, retry_status_codes=[503, 403]) as scythe:
+            scythe.client.headers["user-agent"] = UA
             records = scythe.list_records(metadata_prefix="oai_dc")
             for record in records:
                 if record.deleted:
@@ -46,6 +46,12 @@ for attempt in range(3):
         time.sleep(15)
 
 papers.sort(key=lambda x: 10000 * int(x[0]) + int(x[1]), reverse=True)
+
+if papers:
+    top = papers[0]
+    print(f"harvested {len(papers)} papers; newest={top[0]}/{top[1]}", file=sys.stderr)
+else:
+    print("harvested 0 papers", file=sys.stderr)
 
 for p_year, paper_id, title, authors in papers:
     print(
